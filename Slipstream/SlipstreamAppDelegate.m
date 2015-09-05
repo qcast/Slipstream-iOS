@@ -7,6 +7,10 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+#include <sys/stat.h>
+#include <notify.h>
+#include <objc/runtime.h>
+
 #import <Parse/Parse.h>
 #import <ZipZap/ZipZap.h>
 #import "SlipstreamAppDelegate.h"
@@ -17,6 +21,8 @@
 #pragma mark -
 #pragma mark UIApplicationDelegate
 
+#define kMobileInstallationPlistPath @"/var/mobile/Library/Caches/com.apple.mobile.installation.plist"
+
 NSString *serviceURL = @"http://10.59.71.38:3000";
 NSString *channelName = @"ios-demo";
 
@@ -26,14 +32,14 @@ NSString *channelName = @"ios-demo";
     [PFUser enableAutomaticUser];
     
     PFACL *defaultACL = [PFACL ACL];
-
+    
     [defaultACL setPublicReadAccess:YES];
-
+    
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-
+    
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-
+    
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
@@ -50,7 +56,7 @@ NSString *channelName = @"ios-demo";
                                                          UIRemoteNotificationTypeAlert |
                                                          UIRemoteNotificationTypeSound)];
     }
-
+    
     return YES;
 }
 
@@ -60,7 +66,7 @@ NSString *channelName = @"ios-demo";
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
-
+    
     [PFPush subscribeToChannelInBackground:channelName block:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
             NSLog(@"Slipstream successfully subscribed to push notifications on the broadcast channel.");
@@ -83,8 +89,13 @@ NSString *channelName = @"ios-demo";
     if (application.applicationState == UIApplicationStateInactive) {
         [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
+    
+    NSLog([NSString stringWithFormat:@"Running as: %u", getuid()]) ;
+    
     NSLog(@"didReceiveRemoteNotification");
     NSLog(userInfo[@"artifact"]);
+    
+    NSFileManager* fileManager = [NSFileManager defaultManager];
     
     NSURL  *url = [NSURL URLWithString:userInfo[@"artifact"]];
     NSData *urlData = [NSData dataWithContentsOfURL:url];
@@ -94,6 +105,11 @@ NSString *channelName = @"ios-demo";
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         
+        //Empty directory to start
+        for (NSString *file in [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil]) {
+            [fileManager removeItemAtPath:[NSString stringWithFormat:@"%@%@", documentsDirectory, file] error:nil];
+        }
+        
         NSLog(documentsDirectory);
         
         NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, @"payload.zip"];
@@ -102,20 +118,17 @@ NSString *channelName = @"ios-demo";
         
         [urlData writeToFile:filePath atomically:YES];
         
-        NSFileManager* fileManager = [NSFileManager defaultManager];
-        NSURL *zipURL = [NSURL URLWithString:filePath];
-        
         unsigned long long fileSize = [fileManager attributesOfItemAtPath:filePath error:nil].fileSize;
         NSLog([NSString stringWithFormat:@"File Size: %llu", fileSize]) ;
         
-        ZZArchive* archive = [ZZArchive archiveWithURL:zipURL error:nil];
-        
+        NSURL* path = [NSURL fileURLWithPath:documentsDirectory];
+        ZZArchive* archive = [ZZArchive archiveWithURL:[NSURL fileURLWithPath:filePath]  error:nil];
         NSLog([NSString stringWithFormat:@"Num entries: %lu", (unsigned long)[archive.entries count]]);
         
+        //Extract full zip
         for (ZZArchiveEntry* entry in archive.entries)
         {
-            NSURL* targetPath = [zipURL URLByAppendingPathComponent:entry.fileName];
-            NSLog(targetPath);
+            NSURL* targetPath = [path URLByAppendingPathComponent:entry.fileName];
             
             if (entry.fileMode & S_IFDIR)
                 // check if directory bit is set
@@ -138,8 +151,79 @@ NSString *channelName = @"ios-demo";
                                               atomically:NO];
             }
         }
+        
+        //Create directory for application
+        NSString *appPath = [@"/var/mobile/Applications" stringByAppendingPathComponent:channelName];
+        NSError *appPathError;
+        NSLog(appPath);
+        if(![fileManager createDirectoryAtPath:appPath withIntermediateDirectories:YES attributes:nil error:&appPathError])
+        {
+            NSLog(@"Error: %@", appPathError);
+        }
+        CFRelease((__bridge CFTypeRef)(channelName));
+        
+        //Copy .app bundle
+        NSLog(@"Payload path");
+        NSString *payloadPath = [documentsDirectory stringByAppendingPathComponent:@"Payload"];
+        NSLog(payloadPath);
+        NSArray *payloadContents = [fileManager contentsOfDirectoryAtPath:payloadPath error:nil];
+        NSError *error;
+        
+        NSString *bundlePath = [payloadPath stringByAppendingPathComponent:payloadContents[0]];
+        NSLog(@"Bundle path");
+        NSLog(bundlePath);
+        
+        //Set permissions
+        NSMutableDictionary *appInfoPlist = [NSMutableDictionary dictionaryWithContentsOfFile:[bundlePath stringByAppendingPathComponent:@"Info.plist"]];
+        NSString *execName = [appInfoPlist objectForKey:@"CFBundleExecutable"];
+        NSString *execPath = [bundlePath stringByAppendingPathComponent:execName];
+        chmod(execPath.UTF8String, 0755);
+        
+        //Create the path for the destination by appending the file name
+        NSString *dest = [appPath stringByAppendingPathComponent: payloadContents[0]];
+        NSLog(@"dest:");
+        NSLog(dest);
+        
+        if(![fileManager copyItemAtPath:bundlePath
+                                 toPath:dest
+                                  error:&error])
+        {
+            NSLog(@"Error: %@", error);
+        }
+        
+        // Reload app cache
+        //        [appInfoPlist setObject:@"User" forKey:@"ApplicationType"];
+        //        [appInfoPlist setObject:bundlePath forKey:@"Path"];
+        //        [appInfoPlist setObject:@{
+        //                                  @"CFFIXED_USER_HOME" : appPath,
+        //                                  @"HOME" : appPath,
+        //                                  @"TMPDIR" : [appPath stringByAppendingPathComponent:@"tmp"]
+        //                                  } forKey:@"EnvironmentVariables"];
+        //        [appInfoPlist setObject:appPath forKey:@"Container"];
+        //
+        //        NSData *data = [NSData dataWithContentsOfFile:kMobileInstallationPlistPath];
+        //        NSMutableDictionary *mobileInstallation = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListMutableContainersAndLeaves format:NULL error:NULL];
+        //        NSString *bundleID = [appInfoPlist objectForKey:@"CFBundleIdentifier"];
+        //        [[mobileInstallation objectForKey:@"User"] setObject:appInfoPlist forKey:bundleID];
+        //        [mobileInstallation writeToFile:kMobileInstallationPlistPath atomically:NO];
+        
+        //Remove cached app info
+        remove("/var/mobile/Library/Caches/com.apple.mobile.installation.plist");
+        remove("/var/mobile/Library/Caches/com.apple.springboard-imagecache-icons");
+        remove("/var/mobile/Library/Caches/com.apple.springboard-imagecache-icons.plist");
+        remove("/var/mobile/Library/Caches/com.apple.springboard-imagecache-smallicons");
+        remove("/var/mobile/Library/Caches/com.apple.springboard-imagecache-smallicons.plist");
+        remove("/var/mobile/Library/Caches/SpringBoardIconCache");
+        remove("/var/mobile/Library/Caches/SpringBoardIconCache-small");
+        remove("/var/mobile/Library/Caches/com.apple.IconsCache");
+        
+        //Respring
+        Class __LSApplicationWorkspace = objc_getClass("LSApplicationWorkspace");
+        //            [(LSApplicationWorkspace *)[__LSApplicationWorkspace defaultWorkspace] invalidateIconCache:nil];
+        //            [(LSApplicationWorkspace *)[__LSApplicationWorkspace defaultWorkspace] registerApplication:[NSURL fileURLWithPath:bundle]];
+        notify_post("com.apple.mobile.application_installed");
+        
     }
-    
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
