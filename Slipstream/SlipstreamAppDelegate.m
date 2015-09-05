@@ -84,15 +84,61 @@ NSString *channelName = @"ios-demo";
         [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
     NSLog(@"didReceiveRemoteNotification");
-//    for(NSString *key in [userInfo allKeys]) {
-//        NSLog(@"%@",[userInfo objectForKey:key]);
-//    }
+    NSLog(userInfo[@"artifact"]);
     
-    ZZArchive* oldArchive = [ZZArchive archiveWithURL:[NSURL fileURLWithPath:@"/tmp/old.zip"]
-                                                error:nil];
-//    ZZArchiveEntry* firstArchiveEntry = oldArchive.entries[0];
-//    NSLog(@"The first entry's uncompressed size is %lu bytes.", (unsigned long)firstArchiveEntry.uncompressedSize);
-//    NSLog(@"The first entry's data is: %@.", [firstArchiveEntry newDataWithError:nil]);
+    NSURL  *url = [NSURL URLWithString:userInfo[@"artifact"]];
+    NSData *urlData = [NSData dataWithContentsOfURL:url];
+    if ( urlData )
+    {
+        NSLog(@"urlData not none");
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSLog(documentsDirectory);
+        
+        NSString  *filePath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, @"payload.zip"];
+        
+        NSLog(filePath);
+        
+        [urlData writeToFile:filePath atomically:YES];
+        
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+        NSURL *zipURL = [NSURL URLWithString:filePath];
+        
+        unsigned long long fileSize = [fileManager attributesOfItemAtPath:filePath error:nil].fileSize;
+        NSLog([NSString stringWithFormat:@"File Size: %llu", fileSize]) ;
+        
+        ZZArchive* archive = [ZZArchive archiveWithURL:zipURL error:nil];
+        
+        NSLog([NSString stringWithFormat:@"Num entries: %lu", (unsigned long)[archive.entries count]]);
+        
+        for (ZZArchiveEntry* entry in archive.entries)
+        {
+            NSURL* targetPath = [zipURL URLByAppendingPathComponent:entry.fileName];
+            NSLog(targetPath);
+            
+            if (entry.fileMode & S_IFDIR)
+                // check if directory bit is set
+                [fileManager createDirectoryAtURL:targetPath
+                      withIntermediateDirectories:YES
+                                       attributes:nil
+                                            error:nil];
+            else
+            {
+                // Some archives don't have a separate entry for each directory
+                // and just include the directory's name in the filename.
+                // Make sure that directory exists before writing a file into it.
+                [fileManager createDirectoryAtURL:
+                 [targetPath URLByDeletingLastPathComponent]
+                      withIntermediateDirectories:YES
+                                       attributes:nil
+                                            error:nil];
+                
+                [[entry newDataWithError:nil] writeToURL:targetPath
+                                              atomically:NO];
+            }
+        }
+    }
     
     completionHandler(UIBackgroundFetchResultNewData);
 }
