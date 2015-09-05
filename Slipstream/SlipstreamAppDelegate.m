@@ -8,10 +8,9 @@
  */
 
 #import <Parse/Parse.h>
-
+#import <ZipZap/ZipZap.h>
 #import "SlipstreamAppDelegate.h"
 #import "SlipstreamViewController.h"
-#import "ZipArchive.h"
 
 @implementation SlipstreamAppDelegate
 
@@ -20,7 +19,6 @@
 
 NSString *serviceURL = @"http://10.59.71.38:3000";
 NSString *channelName = @"ios-demo";
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Parse enableLocalDatastore];
@@ -89,13 +87,13 @@ NSString *channelName = @"ios-demo";
 //    for(NSString *key in [userInfo allKeys]) {
 //        NSLog(@"%@",[userInfo objectForKey:key]);
 //    }
-    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"ZipFileName" ofType:@"zip"];
-    ZipArchive *zipArchive = [[ZipArchive alloc] init];
-
-//    [zipArchive UnzipOpenFile:filepath Password:@"xxxxxx"];
-//    [zipArchive UnzipFileTo:{pathToDirectory} overWrite:YES];
-//    [zipArchive UnzipCloseFile];
-//    [zipArchive release];
+    
+    ZZArchive* oldArchive = [ZZArchive archiveWithURL:[NSURL fileURLWithPath:@"/tmp/old.zip"]
+                                                error:nil];
+//    ZZArchiveEntry* firstArchiveEntry = oldArchive.entries[0];
+//    NSLog(@"The first entry's uncompressed size is %lu bytes.", (unsigned long)firstArchiveEntry.uncompressedSize);
+//    NSLog(@"The first entry's data is: %@.", [firstArchiveEntry newDataWithError:nil]);
+    
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
