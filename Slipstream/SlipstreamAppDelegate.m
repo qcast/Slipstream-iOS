@@ -21,7 +21,6 @@ extern id MobileInstallationInstallForLaunchServices(NSString *path, NSDictionar
 
 @implementation SlipstreamAppDelegate
 
-NSString *serviceURL = @"http://10.59.71.38:3000";
 NSString *channelName = @"ios-demo";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -115,16 +114,36 @@ NSString *channelName = @"ios-demo";
         unsigned long long fileSize = [fileManager attributesOfItemAtPath:filePath error:nil].fileSize;
         NSLog(@"File Size: %llu ", fileSize) ;
         
-        NSDictionary *result = MobileInstallationInstallForLaunchServices(filePath, @{}, nil, ^(NSDictionary *dict){
-            NSLog(@"progress");
-            NSLog(@"%@ ", dict);
-        });
+        NSURL* path = [NSURL fileURLWithPath:documentsDirectory];
+        ZZArchive* archive = [ZZArchive archiveWithURL:[NSURL fileURLWithPath:filePath]  error:nil];
+        NSLog(@"Num entries: %lu", (unsigned long)[archive.entries count]);
         
-        NSDictionary *appDictionary = [[result objectForKey:@"InstalledAppInfoArray"] firstObject];
-        NSLog(@"refreshing icon cache");
-        [[LSApplicationWorkspace defaultWorkspace] registerApplicationDictionary:appDictionary];
-        [[LSApplicationWorkspace defaultWorkspace] invalidateIconCache:nil];
-        notify_post("com.apple.mobile.application_installed");
+        //Extract full zip
+        for (ZZArchiveEntry* entry in archive.entries)
+        {
+            NSURL* targetPath = [path URLByAppendingPathComponent:entry.fileName];
+            
+            if (entry.fileMode & S_IFDIR)
+                // check if directory bit is set
+                [fileManager createDirectoryAtURL:targetPath
+                      withIntermediateDirectories:YES
+                                       attributes:nil
+                                            error:nil];
+            else
+            {
+                // Some archives don't have a separate entry for each directory
+                // and just include the directory's name in the filename.
+                // Make sure that directory exists before writing a file into it.
+                [fileManager createDirectoryAtURL:
+                 [targetPath URLByDeletingLastPathComponent]
+                      withIntermediateDirectories:YES
+                                       attributes:nil
+                                            error:nil];
+                
+                [[entry newDataWithError:nil] writeToURL:targetPath
+                                              atomically:NO];
+            }
+        }
     }
     completionHandler(UIBackgroundFetchResultNewData);
 }
