@@ -19,6 +19,12 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIImage *backgroundImage = [UIImage imageNamed:@"circle_preview.png"];
+    UIImageView *backgroundImageView=[[UIImageView alloc]initWithFrame:self.view.frame];
+    backgroundImageView.image=backgroundImage;
+    backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view insertSubview:backgroundImageView atIndex:0];
 }
 
 - (void)didReceiveMemoryWarning {

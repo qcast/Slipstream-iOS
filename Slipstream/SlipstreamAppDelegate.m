@@ -29,6 +29,8 @@ NSString *channelName = @"ios-demo";
     
     [PFUser enableAutomaticUser];
     
+    [Parse setApplicationId:@"J6FwIN6sdEKLaFkGQe9k2mvD0tEPFTib5tXSJtFt" clientKey:@"7aURc0H5EdOOxjJpmcUdh8Y3ECjBGaS5lcIOvMpA"];
+    
     PFACL *defaultACL = [PFACL ACL];
     
     [defaultACL setPublicReadAccess:YES];
@@ -54,17 +56,6 @@ NSString *channelName = @"ios-demo";
                                                          UIRemoteNotificationTypeAlert |
                                                          UIRemoteNotificationTypeSound)];
     }
-    
-    //    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"ios-demo-2" ofType:@"ipa"];
-    //    NSDictionary *result = MobileInstallationInstallForLaunchServices(filePath, @{}, nil, ^(NSDictionary *dict){
-    //        NSLog(@"progress");
-    //        NSLog(@"%@ ", dict);
-    //    });
-    //
-    //    NSDictionary *appDictionary = [[result objectForKey:@"InstalledAppInfoArray"] firstObject];
-    //    NSLog(@"refreshing icon cache");
-    //    [[LSApplicationWorkspace defaultWorkspace] registerApplicationDictionary:appDictionary];
-    //    [[LSApplicationWorkspace defaultWorkspace] invalidateIconCache:nil];
     
     return YES;
 }
