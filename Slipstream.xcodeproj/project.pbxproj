@@ -19,11 +19,14 @@
 		6346DF421B9AD27500F7B5A4 /* libZipZap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6346DF3B1B9AD25500F7B5A4 /* libZipZap.a */; };
 		6346DF441B9AD28F00F7B5A4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6346DF431B9AD28F00F7B5A4 /* ImageIO.framework */; };
 		6346DF461B9AD32600F7B5A4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6346DF451B9AD32600F7B5A4 /* StoreKit.framework */; };
+		637FE7FD1B9BD47300919717 /* ios-demo-2.ipa in Resources */ = {isa = PBXBuildFile; fileRef = 637FE7FC1B9BD47300919717 /* ios-demo-2.ipa */; };
 		63CA83031B9AC0AC0036F1FF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CA83001B9AC0AC0036F1FF /* main.m */; };
 		63CA83041B9AC0AC0036F1FF /* SlipstreamAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CA83021B9AC0AC0036F1FF /* SlipstreamAppDelegate.m */; };
 		63CA83071B9AC1BB0036F1FF /* SlipstreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CA83061B9AC1BB0036F1FF /* SlipstreamViewController.m */; };
 		63CA830A1B9AC4C10036F1FF /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63CA83081B9AC4C10036F1FF /* MainWindow.xib */; };
 		63CA830B1B9AC4C10036F1FF /* SlipstreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63CA83091B9AC4C10036F1FF /* SlipstreamViewController.xib */; };
+		63D3B92E1B9BA6C400A80732 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D3B92D1B9BA6C400A80732 /* MobileCoreServices.framework */; };
+		63D3B93A1B9BB32800A80732 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63D3B9391B9BB32800A80732 /* Entitlements.plist */; };
 		63E9E9401B9B7E5E00C4A9EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63E9E93F1B9B7E5E00C4A9EB /* Images.xcassets */; };
 		743D7B6D157DA60100084B67 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D7B6C157DA60100084B67 /* CoreGraphics.framework */; };
 		814C3ABD1B69864600E307BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 814C3AB21B69864600E307BB /* Default-568h@2x.png */; };
@@ -85,6 +88,7 @@
 		09ABC07313A1D52D009C3FCF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		09BEF34B13D51C3F001BBCDB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2FCDD6AF14A573F500295AAC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6321B5C81B9BC0E600C3B2AB /* MobileInstallation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileInstallation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/PrivateFrameworks/MobileInstallation.framework; sourceTree = DEVELOPER_DIR; };
 		6332375315E438E900AE2736 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		633B19D61B9ACA3F0098ADFD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		6346DF301B9AD25500F7B5A4 /* ZipZap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipZap.xcodeproj; path = ZipZap/ZipZap.xcodeproj; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 		6372FF521613CC3C002132AF /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		6372FF551613CC42002132AF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		6372FF571613CC47002132AF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		637FE7FC1B9BD47300919717 /* ios-demo-2.ipa */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ios-demo-2.ipa"; sourceTree = "<group>"; };
 		63CA83001B9AC0AC0036F1FF /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		63CA83011B9AC0AC0036F1FF /* SlipstreamAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlipstreamAppDelegate.h; sourceTree = "<group>"; };
 		63CA83021B9AC0AC0036F1FF /* SlipstreamAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlipstreamAppDelegate.m; sourceTree = "<group>"; };
@@ -100,6 +105,10 @@
 		63CA83061B9AC1BB0036F1FF /* SlipstreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlipstreamViewController.m; sourceTree = "<group>"; };
 		63CA83081B9AC4C10036F1FF /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		63CA83091B9AC4C10036F1FF /* SlipstreamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SlipstreamViewController.xib; sourceTree = "<group>"; };
+		63D3B92D1B9BA6C400A80732 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		63D3B9341B9BA87C00A80732 /* LSApplicationWorkspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSApplicationWorkspace.h; sourceTree = "<group>"; };
+		63D3B9391B9BB32800A80732 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		63D3B93D1B9BBD6A00A80732 /* Xcode.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Xcode.app; path = ../../../../Applications/Xcode.app; sourceTree = "<group>"; };
 		63E9E93F1B9B7E5E00C4A9EB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		743D7B6C157DA60100084B67 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		814C3AB21B69864600E307BB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -118,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D3B92E1B9BA6C400A80732 /* MobileCoreServices.framework in Frameworks */,
 				6346DF441B9AD28F00F7B5A4 /* ImageIO.framework in Frameworks */,
 				6346DF421B9AD27500F7B5A4 /* libZipZap.a in Frameworks */,
 				633B19D71B9ACA3F0098ADFD /* libz.dylib in Frameworks */,
@@ -164,6 +174,9 @@
 		09ABC07013A1D52D009C3FCF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6321B5C81B9BC0E600C3B2AB /* MobileInstallation.framework */,
+				63D3B93D1B9BBD6A00A80732 /* Xcode.app */,
+				63D3B92D1B9BA6C400A80732 /* MobileCoreServices.framework */,
 				6346DF451B9AD32600F7B5A4 /* StoreKit.framework */,
 				6346DF431B9AD28F00F7B5A4 /* ImageIO.framework */,
 				633B19D61B9ACA3F0098ADFD /* libz.dylib */,
@@ -197,6 +210,7 @@
 				63CA83081B9AC4C10036F1FF /* MainWindow.xib */,
 				63CA83091B9AC4C10036F1FF /* SlipstreamViewController.xib */,
 				63E9E93F1B9B7E5E00C4A9EB /* Images.xcassets */,
+				63D3B9341B9BA87C00A80732 /* LSApplicationWorkspace.h */,
 			);
 			path = Slipstream;
 			sourceTree = "<group>";
@@ -205,10 +219,12 @@
 			isa = PBXGroup;
 			children = (
 				814C3AB21B69864600E307BB /* Default-568h@2x.png */,
+				637FE7FC1B9BD47300919717 /* ios-demo-2.ipa */,
 				814C3AB31B69864600E307BB /* Default.png */,
 				814C3AB41B69864600E307BB /* Default@2x.png */,
 				814C3AB51B69864600E307BB /* InfoPlist.strings */,
 				814C3ABC1B69864600E307BB /* Info.plist */,
+				63D3B9391B9BB32800A80732 /* Entitlements.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -343,9 +359,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D3B93A1B9BB32800A80732 /* Entitlements.plist in Resources */,
 				814C3ABE1B69864600E307BB /* Default.png in Resources */,
 				63CA830A1B9AC4C10036F1FF /* MainWindow.xib in Resources */,
 				63E9E9401B9B7E5E00C4A9EB /* Images.xcassets in Resources */,
+				637FE7FD1B9BD47300919717 /* ios-demo-2.ipa in Resources */,
 				63CA830B1B9AC4C10036F1FF /* SlipstreamViewController.xib in Resources */,
 				814C3ABF1B69864600E307BB /* Default@2x.png in Resources */,
 				814C3ABD1B69864600E307BB /* Default-568h@2x.png in Resources */,
@@ -430,6 +448,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Resources/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -437,9 +456,15 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/PrivateFrameworks",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				INFOPLIST_FILE = Resources/Info.plist;
+				OTHER_LDFLAGS = (
+					"-framework",
+					MobileInstallation,
+				);
 				PRODUCT_NAME = Slipstream;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -452,6 +477,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Resources/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -459,8 +485,14 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
+					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/PrivateFrameworks",
+					"$(SDKROOT)/System/Library/PrivateFrameworks",
 				);
 				INFOPLIST_FILE = Resources/Info.plist;
+				OTHER_LDFLAGS = (
+					"-framework",
+					MobileInstallation,
+				);
 				PRODUCT_NAME = Slipstream;
 				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
